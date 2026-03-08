@@ -102,6 +102,12 @@ export default function App() {
     });
   };
 
+  const resetMission = () => {
+    setSelectedSkills([]);
+    setSelectedSteps({});
+    setScreen(1);
+  };
+
   const exportPDF = () => {
     const doc = new jsPDF();
     let yPos = 30;
@@ -298,7 +304,7 @@ export default function App() {
                       className={cn(
                         "px-6 py-3 rounded-full border transition-all whitespace-nowrap text-sm font-medium",
                         selectedGenre === genre 
-                          ? "bg-black text-white border-black shadow-[0_0_15px_rgba(0,0,0,0.1)]" 
+                          ? "bg-emerald-500 text-white border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]" 
                           : "bg-black/5 border-black/10 text-black/80 hover:bg-black/10"
                       )}
                     >
@@ -527,14 +533,14 @@ export default function App() {
 
               <div className="grid grid-cols-2 gap-4">
                 <button
-                  onClick={() => setScreen(1)}
-                  className="py-4 bg-black text-white font-bold uppercase tracking-widest rounded-2xl hover:bg-black/80 transition-colors shadow-lg"
+                  onClick={resetMission}
+                  className="py-4 bg-emerald-500 text-white font-bold uppercase tracking-widest rounded-2xl hover:bg-emerald-400 transition-colors shadow-lg"
                 >
                   New Mission
                 </button>
                 <button
                   onClick={exportPDF}
-                  className="py-4 bg-emerald-500 text-white font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 hover:bg-emerald-400 transition-colors shadow-lg"
+                  className="py-4 bg-purple-600 text-white font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 hover:bg-purple-500 transition-colors shadow-lg"
                 >
                   Export PDF <Download size={18} />
                 </button>
