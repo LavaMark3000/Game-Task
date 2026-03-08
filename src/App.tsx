@@ -107,24 +107,24 @@ export default function App() {
     let yPos = 30;
 
     // Header
-    doc.setFillColor(245, 245, 245);
+    doc.setFillColor(6, 78, 59); // Dark Green
     doc.rect(0, 0, 210, 297, 'F');
     
-    doc.setTextColor(0, 0, 0);
+    doc.setTextColor(255, 255, 255);
     doc.setFontSize(24);
     doc.text('GAME TASK', 20, yPos);
     yPos += 10;
     
     doc.setFontSize(14);
-    doc.setTextColor(60, 60, 60);
+    doc.setTextColor(200, 200, 200);
     doc.text('MISSION BRIEF', 20, yPos);
     yPos += 5;
     
-    doc.setDrawColor(200, 200, 200);
+    doc.setDrawColor(255, 255, 255);
     doc.line(20, yPos, 190, yPos);
     yPos += 15;
     
-    doc.setTextColor(0, 0, 0);
+    doc.setTextColor(255, 255, 255);
     doc.setFontSize(12);
     doc.text(`Genre: ${selectedGenre}`, 20, yPos);
     yPos += 15;
@@ -132,13 +132,13 @@ export default function App() {
     selectedSkills.forEach((skill, skillIdx) => {
       if (yPos > 250) {
         doc.addPage();
-        doc.setFillColor(245, 245, 245);
+        doc.setFillColor(6, 78, 59);
         doc.rect(0, 0, 210, 297, 'F');
         yPos = 30;
       }
 
       doc.setFontSize(14);
-      doc.setTextColor(0, 0, 0);
+      doc.setTextColor(255, 255, 255);
       doc.text(`Skill: ${skill.name}`, 20, yPos);
       yPos += 8;
 
@@ -146,18 +146,18 @@ export default function App() {
       steps.forEach(step => {
         if (yPos > 250) {
           doc.addPage();
-          doc.setFillColor(245, 245, 245);
+          doc.setFillColor(6, 78, 59);
           doc.rect(0, 0, 210, 297, 'F');
           yPos = 30;
         }
 
         doc.setFontSize(11);
-        doc.setTextColor(20, 20, 20);
+        doc.setTextColor(240, 240, 240);
         doc.text(`Step ${step}:`, 25, yPos);
         yPos += 6;
 
         doc.setFontSize(10);
-        doc.setTextColor(60, 60, 60);
+        doc.setTextColor(200, 200, 200);
         const descriptor = (SKILL_STEP_DESCRIPTORS[skill.id] || {})[step] || `Step ${step} descriptor`;
         const descriptorLines = doc.splitTextToSize(descriptor, 160);
         doc.text(descriptorLines, 30, yPos);
@@ -165,7 +165,7 @@ export default function App() {
 
         const task = getCatalystTask(selectedGenre, skill.id, step);
         doc.setFontSize(11);
-        doc.setTextColor(0, 0, 0);
+        doc.setTextColor(255, 255, 255);
         const taskLines = doc.splitTextToSize(`Task: ${task}`, 160);
         doc.text(taskLines, 30, yPos);
         yPos += (taskLines.length * 6) + 10;
@@ -174,7 +174,7 @@ export default function App() {
     });
     
     doc.setFontSize(8);
-    doc.setTextColor(100, 100, 100);
+    doc.setTextColor(180, 180, 180);
     doc.text('Generated via Game Task App - UF2.0', 20, 285);
     
     doc.save(`GameTask_Mission_${selectedGenre}.pdf`);
@@ -528,13 +528,13 @@ export default function App() {
               <div className="grid grid-cols-2 gap-4">
                 <button
                   onClick={() => setScreen(1)}
-                  className="py-4 bg-black/5 text-black/80 font-bold uppercase tracking-widest rounded-2xl border border-black/5 hover:bg-black/10 transition-colors"
+                  className="py-4 bg-black text-white font-bold uppercase tracking-widest rounded-2xl hover:bg-black/80 transition-colors shadow-lg"
                 >
                   New Mission
                 </button>
                 <button
                   onClick={exportPDF}
-                  className="py-4 bg-black text-white font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 hover:bg-black/90 transition-colors shadow-lg"
+                  className="py-4 bg-emerald-500 text-white font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 hover:bg-emerald-400 transition-colors shadow-lg"
                 >
                   Export PDF <Download size={18} />
                 </button>
