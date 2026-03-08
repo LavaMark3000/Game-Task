@@ -50,6 +50,20 @@ const IconMap: Record<string, React.ElementType> = {
   Handshake
 };
 
+// Sound URLs
+const SOUNDS = {
+  NAV: 'https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3',
+  SELECT: 'https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3',
+  TOGGLE: 'https://assets.mixkit.co/active_storage/sfx/2570/2570-preview.mp3',
+  BACK: 'https://assets.mixkit.co/active_storage/sfx/2567/2567-preview.mp3',
+};
+
+const playSound = (type: keyof typeof SOUNDS) => {
+  const audio = new Audio(SOUNDS[type]);
+  audio.volume = 0.2;
+  audio.play().catch(() => {}); // Ignore errors if browser blocks autoplay
+};
+
 export default function App() {
   const [screen, setScreen] = useState<1 | 2 | 3>(1);
   const [selectedGenre, setSelectedGenre] = useState<Genre>(GENRES[0]);
@@ -62,6 +76,7 @@ export default function App() {
   }, [screen]);
 
   const toggleSkill = (skill: Skill) => {
+    playSound('SELECT');
     setSelectedSkills(prev => {
       const exists = prev.find(s => s.id === skill.id);
       if (exists) {
@@ -82,6 +97,7 @@ export default function App() {
   };
 
   const toggleStep = (skillId: string, step: number) => {
+    playSound('TOGGLE');
     setSelectedSteps(prev => {
       const currentSteps = prev[skillId] || [];
       const exists = currentSteps.includes(step);
@@ -103,6 +119,7 @@ export default function App() {
   };
 
   const resetMission = () => {
+    playSound('BACK');
     setSelectedSkills([]);
     setSelectedSteps({});
     setScreen(1);
@@ -197,7 +214,10 @@ export default function App() {
         </div>
         <div className="flex items-center gap-4">
           <button 
-            onClick={() => setShowHelp(true)}
+            onClick={() => {
+              playSound('NAV');
+              setShowHelp(true);
+            }}
             className="p-2 text-black/70 hover:text-black transition-colors rounded-full hover:bg-black/5"
             title="How to use"
           >
@@ -226,7 +246,10 @@ export default function App() {
               onClick={e => e.stopPropagation()}
             >
               <button 
-                onClick={() => setShowHelp(false)}
+                onClick={() => {
+                  playSound('BACK');
+                  setShowHelp(false);
+                }}
                 className="absolute top-6 right-6 p-2 text-black/70 hover:text-black transition-colors rounded-full hover:bg-black/5"
               >
                 <X size={20} />
@@ -274,7 +297,10 @@ export default function App() {
               </div>
 
               <button
-                onClick={() => setShowHelp(false)}
+                onClick={() => {
+                  playSound('NAV');
+                  setShowHelp(false);
+                }}
                 className="w-full mt-8 py-4 bg-emerald-500 text-white rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-emerald-400 transition-colors shadow-lg"
               >
                 Got it
@@ -294,23 +320,39 @@ export default function App() {
               exit={{ opacity: 0, x: -20 }}
               className="space-y-10"
             >
-              <section>
-                <label className="text-[10px] tracking-widest text-black/70 mb-4 block">01. Select Genre</label>
-                <div className="flex gap-2 overflow-x-auto pb-4 no-scrollbar">
-                  {GENRES.map((genre) => (
-                    <button
-                      key={genre}
-                      onClick={() => setSelectedGenre(genre)}
-                      className={cn(
-                        "px-6 py-3 rounded-full border transition-all whitespace-nowrap text-sm font-medium",
-                        selectedGenre === genre 
-                          ? "bg-emerald-500 text-white border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]" 
-                          : "bg-black/5 border-black/10 text-black/80 hover:bg-black/10"
-                      )}
-                    >
-                      {genre}
-                    </button>
-                  ))}
+              <section className="relative">
+                <div className="flex justify-between items-end mb-4">
+                  <label className="text-[10px] tracking-widest text-black/70 block">01. Select Genre</label>
+                  <motion.span 
+                    animate={{ x: [0, 5, 0] }}
+                    transition={{ repeat: Infinity, duration: 1.5 }}
+                    className="text-[10px] text-emerald-600 font-bold md:hidden flex items-center gap-1"
+                  >
+                    Scroll for more <ChevronRight size={10} />
+                  </motion.span>
+                </div>
+                <div className="relative">
+                  <div className="flex gap-2 overflow-x-auto pb-4 no-scrollbar scroll-smooth">
+                    {GENRES.map((genre) => (
+                      <button
+                        key={genre}
+                        onClick={() => {
+                          playSound('SELECT');
+                          setSelectedGenre(genre);
+                        }}
+                        className={cn(
+                          "px-6 py-3 rounded-full border transition-all whitespace-nowrap text-sm font-medium",
+                          selectedGenre === genre 
+                            ? "bg-emerald-500 text-white border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]" 
+                            : "bg-black/5 border-black/10 text-black/80 hover:bg-black/10"
+                        )}
+                      >
+                        {genre}
+                      </button>
+                    ))}
+                  </div>
+                  {/* Visual indicator for more content */}
+                  <div className="absolute right-0 top-0 bottom-4 w-12 bg-gradient-to-l from-white/80 to-transparent pointer-events-none md:hidden" />
                 </div>
               </section>
 
@@ -358,7 +400,10 @@ export default function App() {
               </section>
 
               <button
-                onClick={() => setScreen(2)}
+                onClick={() => {
+                  playSound('NAV');
+                  setScreen(2);
+                }}
                 disabled={selectedSkills.length === 0}
                 className={cn(
                   "w-full py-5 font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 transition-all shadow-[0_10px_30px_rgba(16,185,129,0.2)]",
@@ -381,7 +426,10 @@ export default function App() {
               className="space-y-10"
             >
               <button 
-                onClick={() => setScreen(1)}
+                onClick={() => {
+                  playSound('BACK');
+                  setScreen(1);
+                }}
                 className="flex items-center gap-2 text-black/70 hover:text-black transition-colors text-sm"
               >
                 <ChevronLeft size={16} /> Back to Setup
@@ -408,7 +456,10 @@ export default function App() {
                           <h3 className="font-bold text-sm tracking-widest" style={{ color: skill.color }}>{skill.name}</h3>
                         </div>
                         <button
-                          onClick={() => toggleAllSteps(skill.id)}
+                          onClick={() => {
+                            playSound('SELECT');
+                            toggleAllSteps(skill.id);
+                          }}
                           className="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border border-black/10 hover:bg-black/5 transition-colors"
                         >
                           {(selectedSteps[skill.id] || []).length === 16 ? 'Deselect All' : 'Select All'}
@@ -453,7 +504,10 @@ export default function App() {
               </section>
 
               <button
-                onClick={() => setScreen(3)}
+                onClick={() => {
+                  playSound('NAV');
+                  setScreen(3);
+                }}
                 disabled={Object.values(selectedSteps).every((steps: number[]) => steps.length === 0)}
                 className={cn(
                   "w-full py-5 font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 transition-all shadow-[0_10px_30px_rgba(16,185,129,0.2)]",
@@ -476,7 +530,10 @@ export default function App() {
               className="space-y-8"
             >
               <button 
-                onClick={() => setScreen(2)}
+                onClick={() => {
+                  playSound('BACK');
+                  setScreen(2);
+                }}
                 className="flex items-center gap-2 text-black/70 hover:text-black transition-colors text-sm"
               >
                 <ChevronLeft size={16} /> Adjust Steps
@@ -539,7 +596,10 @@ export default function App() {
                   New Mission
                 </button>
                 <button
-                  onClick={exportPDF}
+                  onClick={() => {
+                    playSound('NAV');
+                    exportPDF();
+                  }}
                   className="py-4 bg-purple-600 text-white font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 hover:bg-purple-500 transition-colors shadow-lg"
                 >
                   Export PDF <Download size={18} />
