@@ -275,7 +275,7 @@ export default function App() {
 
               <button
                 onClick={() => setShowHelp(false)}
-                className="w-full mt-8 py-4 bg-black text-white rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-emerald-600 transition-colors shadow-lg"
+                className="w-full mt-8 py-4 bg-emerald-500 text-white rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-emerald-400 transition-colors shadow-lg"
               >
                 Got it
               </button>
