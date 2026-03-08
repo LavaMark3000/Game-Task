@@ -113,24 +113,24 @@ export default function App() {
     let yPos = 30;
 
     // Header
-    doc.setFillColor(6, 78, 59); // Dark Green
+    doc.setFillColor(255, 255, 255);
     doc.rect(0, 0, 210, 297, 'F');
     
-    doc.setTextColor(255, 255, 255);
+    doc.setTextColor(16, 185, 129); // Emerald-500 (more readable than 400 on white)
     doc.setFontSize(24);
     doc.text('GAME TASK', 20, yPos);
     yPos += 10;
     
     doc.setFontSize(14);
-    doc.setTextColor(200, 200, 200);
+    doc.setTextColor(100, 100, 100);
     doc.text('MISSION BRIEF', 20, yPos);
     yPos += 5;
     
-    doc.setDrawColor(255, 255, 255);
+    doc.setDrawColor(16, 185, 129);
     doc.line(20, yPos, 190, yPos);
     yPos += 15;
     
-    doc.setTextColor(255, 255, 255);
+    doc.setTextColor(0, 0, 0);
     doc.setFontSize(12);
     doc.text(`Genre: ${selectedGenre}`, 20, yPos);
     yPos += 15;
@@ -138,13 +138,13 @@ export default function App() {
     selectedSkills.forEach((skill, skillIdx) => {
       if (yPos > 250) {
         doc.addPage();
-        doc.setFillColor(6, 78, 59);
+        doc.setFillColor(255, 255, 255);
         doc.rect(0, 0, 210, 297, 'F');
         yPos = 30;
       }
 
       doc.setFontSize(14);
-      doc.setTextColor(255, 255, 255);
+      doc.setTextColor(skill.activeColor);
       doc.text(`Skill: ${skill.name}`, 20, yPos);
       yPos += 8;
 
@@ -152,18 +152,18 @@ export default function App() {
       steps.forEach(step => {
         if (yPos > 250) {
           doc.addPage();
-          doc.setFillColor(6, 78, 59);
+          doc.setFillColor(255, 255, 255);
           doc.rect(0, 0, 210, 297, 'F');
           yPos = 30;
         }
 
         doc.setFontSize(11);
-        doc.setTextColor(240, 240, 240);
+        doc.setTextColor(0, 0, 0);
         doc.text(`Step ${step}:`, 25, yPos);
         yPos += 6;
 
         doc.setFontSize(10);
-        doc.setTextColor(200, 200, 200);
+        doc.setTextColor(80, 80, 80);
         const descriptor = (SKILL_STEP_DESCRIPTORS[skill.id] || {})[step] || `Step ${step} descriptor`;
         const descriptorLines = doc.splitTextToSize(descriptor, 160);
         doc.text(descriptorLines, 30, yPos);
@@ -171,7 +171,7 @@ export default function App() {
 
         const task = getCatalystTask(selectedGenre, skill.id, step);
         doc.setFontSize(11);
-        doc.setTextColor(255, 255, 255);
+        doc.setTextColor(0, 0, 0);
         const taskLines = doc.splitTextToSize(`Task: ${task}`, 160);
         doc.text(taskLines, 30, yPos);
         yPos += (taskLines.length * 6) + 10;
@@ -180,7 +180,7 @@ export default function App() {
     });
     
     doc.setFontSize(8);
-    doc.setTextColor(180, 180, 180);
+    doc.setTextColor(150, 150, 150);
     doc.text('Generated via Game Task App - UF2.0', 20, 285);
     
     doc.save(`GameTask_Mission_${selectedGenre}.pdf`);
